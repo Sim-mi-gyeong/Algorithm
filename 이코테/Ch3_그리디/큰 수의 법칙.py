@@ -3,7 +3,7 @@ n, m, k = map(int, input().split())
 arr = list(map(int, input().split()))
 arr.sort(reverse=True)
 
-cnt = 0   # 연산(더하기) 횟구
+cnt = 0   # 연산(더하기) 횟수
 sum = 0
 
 while(cnt != m):

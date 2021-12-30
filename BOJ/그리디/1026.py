@@ -10,8 +10,7 @@ for i in range(n):
     sum += a[i] * b[i]
 print(sum)
 
-
-
+# 확인하기
 # b_tmp = sorted(b, reverse=True)
 # b_idx = []
 # for i in b:
