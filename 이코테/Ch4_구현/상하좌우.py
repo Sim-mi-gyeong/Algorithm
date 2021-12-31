@@ -7,33 +7,34 @@ start_time = time.time()
 
 n = int(input())
 path = list(input().split())
-print(path)
 
+# 각 방향에 대한 딕셔너리 가능
 L = [0, -1]
 R = [0, 1]
 U = [-1, 0]
 D = [1, 0]
-start_x, start_y = 1, 1
+x, y = 1, 1
 
 for i in range(len(path)):
-    
     if path[i] == 'L':
-        start_x = start_x + L[0]
-        start_y = start_y + L[1]
+        end_x = x + L[0]
+        end_y = y + L[1]
     if path[i] == 'R':
-        start_x = start_x + R[0]
-        start_y = start_y + R[1]
+        end_x = x + R[0]
+        end_y = y + R[1]
     if path[i] == 'U':
-        start_x = start_x + U[0]
-        start_y = start_y + U[1]
+        end_x = x + U[0]
+        end_y = y + U[1]
     if path[i] == 'D':
-        start_x = start_x + D[0]
-        start_y = start_y + D[1]
-        
-    if start_x < 1 or start_y < 1 or start_x > n or start_y > n:
+        end_x = x + D[0]
+        end_y = y + D[1]
+
+    # 이동 후 좌표 먼저 확인 후 O / X 에 따라 이동 결정도 가능
+    if end_x < 1 or end_y < 1 or end_x > n or end_y > n:
         continue
 
-    x, y = start_x, start_y
-    print(x, y)
+    x, y = end_x, end_y
 
-print(x, y)   # 1 4
+end_time = time.time()
+print(x, y) 
+print('걸린 시간 : ', end_time)
