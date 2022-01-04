@@ -1,47 +1,15 @@
 # 회의실 배정
-import time
-start_time = time.time()
+# O(N) -> '가장 일찍 끝나는 회의의 종료 시각' <= '다음 회의의 시작 시각'
 
-n = int(input())
+time = [list(map(int, input().split())) for _ in range(int(input()))]
+time.sort(key = lambda x: (x[1], x[0]))
+cnt = 1 
+start = time[0][0]
+end = time[0][1]
 
-list = []
-for i in range(n):
-    start, end = map(int, input().split())
-    list.append((start, end))
-list.sort() 
-
-i = 0
-j = i + 1
-incre = 1
-cnt = 1
-max = cnt
-
-while(incre <= len(list) - 1):
-    if list[i][1] > list[j][0]:
-        if j == len(list) - 1:
-            if max < cnt:
-                max = cnt
-
-            i = incre
-            j = i + 1
-            incre += 1
-            cnt = 1
-        else:
-            j += 1
-    else:
+for i in range(1, len(time)):
+    if time[i][0] >= end:
+        start = time[i][0]
+        end = time[i][1]
         cnt += 1
-        i = j
-        if i == len(list) - 1:
-            if max < cnt:
-                max = cnt
-
-            i = incre
-            j = i + 1
-            incre += 1
-            cnt = 1
-        else:
-            j = i + 1
-
-end_time = time.time()
-print(max)
-print('걸린 시간 : ', end_time - start_time)
+print(cnt)
