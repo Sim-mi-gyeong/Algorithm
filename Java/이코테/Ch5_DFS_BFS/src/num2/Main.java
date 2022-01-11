@@ -25,7 +25,7 @@ class Node {
 
 public class Main {
     public static int n, m;
-    public static int[][] graph = new int[200][200];
+    public static int[][] graph = new int[201][201];
     public static int dx[] = {-1, 1, 0, 0};
     public static int dy[] = {0, 0, -1, 1};
 
@@ -51,16 +51,14 @@ public class Main {
                     q.offer(new Node(nx, ny));
                 }
             }
-
         }
-
         return graph[n - 1][m - 1];
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+        n = sc.nextInt();
+        m = sc.nextInt();
         sc.nextLine();
 
         for (int i = 0; i < n; i++) {
