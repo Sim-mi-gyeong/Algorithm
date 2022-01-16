@@ -29,6 +29,7 @@ for i in range(int(input())):
          # 금광 정보를 입력받을 때 한 줄로 -> 열의 크기(m) 단위로 데이터를 slicing해서 dp 테이블에 담기
         dp.append(arr[idx:idx+m])  
         idx += m
+        
     # DP 진행
     for j in range(1, m):   # 1 열부터 ~ m-1 열까지 (이전 위치에 대해) -> 각 열마다 전체 행을 확인
         for i in range(n):   # 0 행부터 ~ n-1 행까지
@@ -45,7 +46,7 @@ for i in range(int(input())):
                 left_down = dp[i+1][j-1]
             # 왼쪽에서 오는 경우
             left = dp[i][j-1]
-            
+
             dp[i][j] = dp[i][j] + max(left_up, left_down, left)
             
     ans = 0
