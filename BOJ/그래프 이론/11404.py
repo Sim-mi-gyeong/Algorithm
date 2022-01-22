@@ -1,49 +1,30 @@
 # 플로이드
 
-from xml.sax import make_parser
-
-
 n = int(input())   # 도시의 수
 m = int(input())   # 버스의 수
-lst = [list(map(int, input().split())) for _ in range(m)]    # 시작 도시, 도착 도시, 비용
-# lst = []
-# for i in range(m):
-#     a, b, c = map(int, input().split())
-print(lst)
-money = [[0] * n for _ in range(n)]
-city = [[0] * n for _ in range(n)]
-for i in lst:
-    a, b, c = i[0], i[1], i[2]
-    city[a-1][b-1] = 1
-    money[a-1][b-1] = c
-    # if money[a-1][b-1] < c:
-    #     continue
-    # money[a-1][b-1] = min(money[a-1][b-1], c)
-# for i in lst:
-#     a, b, c = i[0], i[1], i[2]
-#     money[a-1][b-1] = c
-print('중간 지점 처리 전 : ', city)
-print()
-print('중간 지점 처리 전 금액 : ', money)
-ans = [[100000] * n for _ in range(n)]
-for k in range(5):
-    for i in range(5):
-        for j in range(5):
-            if city[i][j] == 1: 
-                ans[i][j] = min(ans[i][j], money[i][j])
-            # if city[i][j] == 1 or city[i][j] == 0: 
-            #     ans[i][j] = money[i][j]
-            # elif city[i][j] == 0: ans[i][j] = money[i][j]
-            elif city[i][j] == 0 and city[i][k] == 1 and city[k][j] == 1:
-                # 비용 더한 거 처리
-                # money[i][j] = min(money[i][j], money[i][k] + money[k][j])
-                ans[i][j] = min(ans[i][j], money[i][k] + money[k][j])
-                # pass
-                # city[i][j] = 1
-print()            
-# print('중간 지점 처리 후 : ', city)
-print()
-print('중간 지점 처리 후 금액 money: ', money)
+# lst = [list(map(int, input().split())) for _ in range(m)]    # 시작 도시, 도착 도시, 비용
+INF = int(1e9)
 
-print()
-print('중간 지점 처리 후 금액 ans : ', ans)
+ans = [[INF] * n for _ in range(n)]
+for i in range(m):
+    # a, b, c = i[0], i[1], i[2]
+    a, b, c = map(int, input().split())
+    if a == b: ans[a-1][b-1] = 0
+    if ans[a-1][b-1] > c:
+        ans[a-1][b-1] = c   # 작은 금액으로 대체
+
+for k in range(n):
+    for i in range(n):
+        for j in range(n):
+            # 모든 도시의 쌍 (A, B) 의 경로가 존재!!!! -> i > k == 1 and k > j == 1 확인 안 해도 됨.
+            if i == j: 
+                ans[i][j] = 0
+            else:
+                ans[i][j] = min(ans[i][j], ans[i][k] + ans[k][j])
+for i in ans:
+    for j in i: 
+        if j == INF:
+            print(0, end = ' ')
+        else:
+            print(j, end= ' ')
+    print()
