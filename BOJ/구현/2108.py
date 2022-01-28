@@ -1,9 +1,10 @@
 # 통계학
 
-n = int(input())
+import sys
+n = int(sys.stdin.readline())
 num = []
 for i in range(n):
-    num.append(int(input()))
+    num.append(int(sys.stdin.readline()))
 num.sort()
 # 산술평균 - 소수점 이하 첫째 자리에서 반올림한 값
 print(sum(num) // len(num))
