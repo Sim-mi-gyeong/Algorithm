@@ -10,23 +10,6 @@ h = 0   # 단지 개수, 집이 있는 곳 개수 Count
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-# def bfs(x, y):
-#     if x < 0 or y < 0 or  x >= n or y >= n:
-#         return False
-#     start = house[x][y]
-#     queue = deque([start])
-
-#     while queue:
-#         v = queue.popleft()
-
-#         if v == 1:
-#             house[x][y] = 0
-#             queue.append(v)
-        
-#         for i in range(len(dx)):
-#             nx = x + dx[i]
-#             ny = y + dy[i]
-
 def dfs(x, y):
     global h
     if x < 0 or y < 0 or  x >= n or y >= n:
