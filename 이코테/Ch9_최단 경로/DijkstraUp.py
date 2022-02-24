@@ -31,9 +31,9 @@ def dijkstra(start):
     
     while q:   # 큐가 비어있지 않다면
         # 가장 최단 거리가 짧은 노드에 대한 정보 꺼내기
-        dist, now = heapq.heappush(q)
-        # 현재 노드가 이미 처리된 적이 있는 노드라면, 무시
-        if distance[now] < dis:
+        dist, now = heapq.heappush(q)   # (거리, 현재 노드)
+        # 현재 노드가 이미 처리된 적이 있는 노드라면(꺼낸 노드의 거리 값이, 테이블에 기록된 값보다 크다면), 무시
+        if distance[now] < dist:
             continue
         # 현재 노드와 연결된 다른 인접한 노드들을 확인
         for i in graph[now]:
