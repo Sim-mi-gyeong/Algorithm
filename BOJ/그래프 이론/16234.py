@@ -12,8 +12,9 @@ cnt = 0   # 인구 이동 요일 수
 def bfs(x, y, p, visited):
     global check
     queue = deque([])
-    visited[x][y] = 1
+    tmp = deque([])   # bfs 실행 마다 다른 군집 생성 가능
     queue.append([x, y])
+    # visited[x][y] = 1 
     country = 1   # 연합에 속할 국가 수
     people = p[x][y]   # 연합에 속할 국가의 인구 수
 
@@ -27,17 +28,21 @@ def bfs(x, y, p, visited):
             if 0 <= nx < n and 0 <= ny < n and visited[nx][ny] == 0:    # 현재 위치(x)에서 다음 위치(nx)로 방문한 적 없고,
                 d = abs(p[x][y] - p[nx][ny])
                 if l <= d <= r:
+                    visited[x][y] = 1   # bfs 실행 시 바로 방문처리가 아닌, '연합이 가능한 후보군일 경우'에 방문 처리
+        
                     visited[nx][ny] = 1   # 방문처리 -> 국경 오픈 대상
                     queue.append([nx, ny])
                     country += 1
                     people += p[nx][ny]
-    
+                    
+                    if [x, y] not in tmp and [nx, ny] not in tmp:
+                        tmp.append(([x, y]))
+                        tmp.append([nx, ny])
+                
     # 큐를 다 비우고, 인구 이동 처리
     if country > 1:
-        for i in range(n):
-            for j in range(n):
-                if visited[i][j] == 1: 
-                    p[i][j] = people // country
+        for i, j in tmp:
+            p[i][j] = people // country
         check = True
 
 while True:
