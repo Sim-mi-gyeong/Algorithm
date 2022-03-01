@@ -1,6 +1,6 @@
 import heapq
 import sys
-from winreg import ConnectRegistry
+
 input = sys.stdin.readline
 INF = int(1e9)
 
@@ -31,17 +31,18 @@ def dijkstra(start):
     
     while q:   # 큐가 비어있지 않다면
         # 가장 최단 거리가 짧은 노드에 대한 정보 꺼내기
-        dist, now = heapq.heappush(q)   # (거리, 현재 노드)
+        dist, now = heapq.heappop(q)   # (거리, 현재 노드)
         # 현재 노드가 이미 처리된 적이 있는 노드라면(꺼낸 노드의 거리 값이, 테이블에 기록된 값보다 크다면), 무시
-        if distance[now] < dist:
+        if distance[now] < dist:   # 방문 여부 리스트 생성 없이! 
             continue
         # 현재 노드와 연결된 다른 인접한 노드들을 확인
         for i in graph[now]:
+            # 현재 확인하고 있는 노드까지의 거리 + 그 노드와 인접한 다른 노드까지의 거리
             cost = dist + i[1]
-            # 현재 노드를 거쳐, 다른 노드로 이동하는 거리가 더 짧은 경우
-            if cost < distance[i[0]]:
+            # 현재 노드를 거쳐, 다른 노드로 이동하는 거리가 더 짧은 경우(갱신 후 -> 우선순위 큐에 추가)
+            if cost < distance[i[0]]: 
                 distance[i[0]] = cost
-                heapq.heappushq, (cost, i[0])
+                heapq.heappush(q, (cost, i[0]))
 
 # 다익스트라 알고리즘 수행
 dijkstra(start)

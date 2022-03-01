@@ -20,21 +20,3 @@ def dfs(start, lst, parent):
 dfs(1, lst, parent)
 for i in range(2, len(parent)):
     print(parent[i])
-
-# n = int(input())
-# lst = [[] * (n + 1) for _ in range(n + 1)]
-# for i in range(n-1):
-#     a, b = map(int, input().split())
-#     lst[a].append(b)
-#     lst[b].append(a)
-
-# parent = [0] * (n+1)
-# parent[1] = 1
-# for i in range(1, len(lst)):
-#     for j in lst[i]:
-#         if parent[j] != 0: continue
-#         elif parent[i] == j: continue
-#         else: parent[j] = i
-# for i in range(2, len(parent)):
-#     print(parent[i])
-

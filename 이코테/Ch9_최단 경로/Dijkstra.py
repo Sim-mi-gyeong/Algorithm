@@ -1,5 +1,5 @@
 import sys
-input = sys.stdin.readline()
+input = sys.stdin.readline
 INF = int(1e9)   # 무한을 의미하는 값(10억)
 
 # 노드의 개수, 간선의 개수 입력 받기
@@ -38,13 +38,14 @@ def dijkstra(start):
     
     # 시작 노드를 제외한 전체 n-1 개의 노드에 대해 반복
     for i in range(n-1):
-        # 현재 최단 거리가 가장 짧은 노드를 꺼내서, 방문 처리
+        # 현재 최단 거리가 가장 짧은 노드를 꺼내서, 방문 처리 
+        # -> 시작 노드에 대해 초기화할 때, 시작 노드와 연결된 노드까지의 거리 정보가 반영된 상태
         now = get_smallest_node()
         visited[now] = True
         # 현재 노드와 연결된 다른 노드를 확인
         for j in graph[now]:
             # distanct[now] : 현재 선택된 노드까지의 거리  /  j[i] : 현재 노드와 연결된 거리 값
-            cost = distance[now] + j[i]
+            cost = distance[now] + j[1]
             # 현재 노드를 거쳐서 다른 노드로 이동하는 거리가 더 짧은 경우
             if cost < distance[j[0]]:   # 기존 비용보다 작다면
                 distance[j[0]] = cost
@@ -60,4 +61,3 @@ for i in range(1, n+1):
     # 도달할 수 있는 경우, 거리 추력
     else:
         print(distance[i])
-
