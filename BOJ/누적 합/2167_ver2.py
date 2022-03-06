@@ -12,8 +12,7 @@ for i in range(1, n + 1):
     for j in range(1, m + 1):
         # 원래 값 + 위 + 왼쪽 - 대각선(위와 왼쪽 계산 시 이미 한 번씩 처리) 중복 제거용
         sumList[i][j] = lst[i-1][j-1] + sumList[i-1][j] + sumList[i][j-1] - sumList[i-1][j-1]
-
-print(sumList)                   
+               
 for _ in range(k):
     i, j, x, y = map(int, input().split())   # 1 부터 시작
     # sumList[x][j-1] 와 sumList[i-1][y] 에서 겹치는 부분 sumList[i-1][j-1] 빼주기
