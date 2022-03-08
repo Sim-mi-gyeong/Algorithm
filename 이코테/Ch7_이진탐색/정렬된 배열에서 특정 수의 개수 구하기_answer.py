@@ -21,3 +21,11 @@ array = list(map(int, input().split()))
 count = count_by_range(array, x, x)
 if count == 0: print(-1)
 else: print(count)
+
+'''
+[입력 예시]
+7 2
+1 1 2 2 2 2 3
+[출력 예시]
+4
+'''

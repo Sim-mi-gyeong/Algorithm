@@ -10,3 +10,11 @@ def count(arr, left, right):
     right_idx = bisect_right(arr, right)
     return right_idx - left_idx
 print(count(lst, m, m))
+
+'''
+[입력 예시]
+7 2
+1 1 2 2 2 2 3
+[출력 예시]
+4
+'''
