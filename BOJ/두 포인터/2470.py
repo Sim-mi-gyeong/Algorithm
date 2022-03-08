@@ -1,5 +1,5 @@
 # 두 용액
-# 시간 초과 -> 이분탐색으로 풀기
+# 시간 초과 -> 이진탐색으로 풀기
 
 import sys
 input = sys.stdin.readline
