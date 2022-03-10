@@ -12,8 +12,7 @@ for _ in range(m):
     lst[a].append((cost, b))
     lst[b].append((cost, a))
 
-x, y = map(int, input().split())
-start, end = x, y
+start, end = map(int, input().split())
 
 def dijkstra(start, end):
     q = []
@@ -34,9 +33,21 @@ def dijkstra(start, end):
                 distance[i[1]] = i[0]   # 다음 노드까지 가는 중량이 바로 distance 테이블에 저장
                 heapq.heappush(q, (-distance[i[1]], i[1]))
             # 기존에 테이블에 저장된 값이, dist(이전 도시에서 최대 중량)와 현재 다리의 최대 중량(i[0]) 보다 작다면
+            # 테이블 저장 값 / dist(이전 도시 최대 중량) / i[0](현재 도시 최대 중량) 세 가지 고려
             elif distance[i[1]] < i[0] and distance[i[1]] < dist:   # 다음으로 나가아가고자 하는 노드까지 이미 저장된 중량 테이블 값이 < 다음 노드까지 가능한(큐에서 꺼낸) 값보다 작은 경우
                 distance[i[1]] = min(i[0], dist)   # 이전 노드까지의 최대 중량과, 현재 다리의 최대 중량 중 작은 값이 저장
                 heapq.heappush(q, (-distance[i[1]], i[1]))
 
 dijkstra(start, end)
 print(distance[end])
+
+"""
+4 6
+1 2 2
+2 4 9
+4 3 3
+2 3 10
+1 3 8
+3 4 7
+1 4
+"""

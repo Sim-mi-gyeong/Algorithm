@@ -3,7 +3,7 @@
 
 import heapq
 
-m, n = map(int, input().split())   # 가로, 세로
+m, n = map(int, input().split())
 graph = [list(map(int, input())) for _ in range(n)]
 dx, dy = [-1, 1, 0, 0], [0, 0, -1, 1]
 INF = int(1e9)
