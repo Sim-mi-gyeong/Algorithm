@@ -14,4 +14,5 @@ for i in lst:
         stack.append(i)
     else:
         stack[bisect_left(stack, i)] = i
+
 print(len(stack) - 1)
