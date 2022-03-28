@@ -133,29 +133,51 @@ public class BinaryTree {
             if (currentNode == null) {   // 이동해서 온 노드 위치가 null 값이라면
                 return false;
             }
-
         }
 
         // TODO 1. 자식 노드가 없는 경우
-
-
-        // TODO 2-1. 자식 노드가 하나인 경우(왼쫀 자식만 존재)
-
-
+        if (currentNode.getLeft() == null && currentNode.getRight() == null) {
+            if (currentNode == root) {
+                root = null;
+            }
+            if (isLeftChild) {
+                parentNode.setLeft(null);
+            } else {
+                parentNode.setRight(null);
+            }
+        }
+        // TODO 2-1. 자식 노드가 하나인 경우(왼쫀 자식만 존재) - 해당 노드의 부모 노드의 자식 = 해당 노드의 자식 노드로
+        else if (currentNode.getRight() == null) {
+            parentNode.setLeft(currentNode.getLeft());
+        }
         // TODO 2-2. 자식 노드가 하나인 경우(오른쪽 자식만 존재)
-
-
+        else if (currentNode.getLeft() == null){
+            parentNode.setRight(currentNode.getRight());
+        }
         // TODO 3. 자식 노드가 둘인 경우
+        else {
+            Node minimum = getMin(currentNode);
+
+        }
 
 
         return false;
     }
 
     Node getMin(Node deleteNode) {
-        Node minNode = null;
-        Node minNodeParent = null;
+        Node minimum = null;
+        Node minimumParent = null;
         Node currentNode = deleteNode.getRight();
-        return minNode;
+
+        while (currentNode != null) {
+            minimumParent = minimum;
+        }
+
+        if (minimum != deleteNode.getRight()) {
+
+        }
+
+        return minimum;
     }
 
 
