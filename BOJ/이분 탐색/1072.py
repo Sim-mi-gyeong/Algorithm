@@ -1,5 +1,6 @@
 # 게임
 # 부동소수점 오차 : https://www.acmicpc.net/board/view/64909
+# Y*100//X 방식과 int(Y/X*100) 방식 중 int(Y/X*100) 으로 29/50 * 100 = 57.9999999
 
 x, y = map(int, input().split())
 z = y * 100 // x
