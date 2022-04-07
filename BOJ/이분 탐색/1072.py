@@ -1,38 +1,22 @@
 # 게임
-# x 를 증가 -> y도 증가 -> 승률 증가
-
-import math
+# 부동소수점 오차 : https://www.acmicpc.net/board/view/64909
 
 x, y = map(int, input().split())
-z = math.floor((y / x) * 100)
-if z >= 100:
+z = y * 100 // x
+# z = math.floor((y / x) * 100)
+start, end = 0, 1000000000
+# 이진탐색을 수행해도 승률이 달라지지 않는 경우 처리
+ans = 0
+while start <= end:
+    mid = (start + end) // 2
+    nextZ = ((y + mid) * 100) // (x + mid)
+    if nextZ > z:
+        end = mid - 1
+        ans = mid
+    else:
+        start = mid + 1
+
+if ans != 0:
+    print(ans)
+else:
     print(-1)
-    exit(0)
-
-start = x
-end = 1000000000
-print("처음 승률 z : ", z)
-
-
-def binarySearch(x, y, start, end):
-    ans = 1000000000
-    # result = 0
-    while start <= end:
-        mid = (start + end) // 2
-        # 최소 몇 판 더 해야하는지
-        newY = y + (mid - start)
-        nextZ = math.floor((newY / mid) * 100)
-        if nextZ <= z:
-            start = mid + 1
-        else:
-            end = mid - 1
-            result = end
-            print("result : ", result, "승률 : ", nextZ)
-
-        ans = min(ans, result)
-
-    return ans
-
-
-ans = binarySearch(x, y, start, end) - x
-print(ans)
