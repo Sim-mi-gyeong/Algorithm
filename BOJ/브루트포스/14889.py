@@ -13,12 +13,7 @@ ans = 1e9
 for key, value in team.items():
 
     team1, team2 = value[0], value[1]
-    print("team1")
-    print(team1)
-    # print()
-    print("team2")
-    print(team2)
-    print()
+
     power1, power2 = 0, 0
     sub1 = list(combinations(team1, 2))
     sub2 = list(combinations(team2, 2))
