@@ -1,4 +1,5 @@
 # 부분 삼각 수열
+# 메모리 제한 128MB -> 초과
 
 from itertools import combinations
 import sys
@@ -7,7 +8,6 @@ input = sys.stdin.readline
 
 n = int(input())
 a = list(map(int, input().split()))
-a.sort()
 ans = 0
 
 if len(a) < 3:
