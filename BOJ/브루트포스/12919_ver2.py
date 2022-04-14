@@ -1,4 +1,4 @@
-# A와 B 2
+# A와 B 2 - 메모리 초과
 
 s = input()
 t = input()
