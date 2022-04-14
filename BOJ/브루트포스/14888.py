@@ -1,4 +1,5 @@
 # 연산자 끼워넣기
+# 순열
 
 from itertools import permutations  # 순열 -> 같은 것을 다른 것으로 처리
 
