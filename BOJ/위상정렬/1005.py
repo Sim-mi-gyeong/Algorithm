@@ -1,5 +1,8 @@
 # ACM Craft
 from collections import deque
+import sys
+
+input = sys.stdin.readline
 
 
 def topologySort():
@@ -10,24 +13,21 @@ def topologySort():
             queue.append((i, time[i]))
             result[i] = time[i]
 
-    newTime = 0  # 전체 합산에 대한 시간 변수
     while queue:
         now, beforeTime = queue.popleft()
         if now == w:
             return result[now]
 
-        currentTime = 0  # 같은 열에서 선택지가 다를 경우 최댓값을 저장하기 위한 시간 변수
-        # newTime = 0
         for j in graph[now]:
             indegree[j] -= 1
             if indegree[j] == 0:
-                currentTime = max(currentTime, time[j])
-                newTime = max(newTime, beforeTime + currentTime)
+                # 걸리는 시간의 최댓값이 result 테이블에도 저장한 상태! -> 새로 변수를(currentTime 등) 생성해 max 비교하지 않아도 됨
+                newTime = max(result[j], result[now] + time[j])
                 queue.append((j, newTime))
                 result[j] = newTime
-            else:
-                currentTime = max(currentTime, time[j])
-                newTime = max(newTime, beforeTime + currentTime)
+            else:  # indegree -= 1 이후에도 0이 되지 않는 경우
+                newTime = max(result[j], result[now] + time[j])
+                result[j] = newTime
 
 
 t = int(input())
@@ -47,14 +47,6 @@ for _ in range(t):
 
 
 """
-1
-4 3
-1 1 1 1
-1 2
-3 2
-1 4
-4
-
 1
 3 2
 1 1 1
