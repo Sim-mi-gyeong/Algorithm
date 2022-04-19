@@ -61,7 +61,7 @@ public class BinaryTree {
     public boolean insert(int value) {
         Node newNode = new Node(value);   // 값을 받아 -> 새로운 New Node 생성
         // 처음 값을 삽입할 때, find 호출을 하면
-        // Node 클래스를 찹조하는 root node 값이 할당되지 X => null
+        // Node 클래스를 참조하는 root node 값이 할당되지 X => null
         // find(value);
         // System.out.println("root : " + root);
         // -> 현재 노드에 대한, Node 클래스를 참조하는 currentNode = root = null -> currentNode = null 이므로, while 문 통과 X
