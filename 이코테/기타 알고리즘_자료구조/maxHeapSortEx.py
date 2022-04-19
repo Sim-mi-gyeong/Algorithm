@@ -11,11 +11,11 @@ def heapSort(iterable):
     result = []
     # 모든 원소를 차례대로 힙에 삽입
     for value in iterable:
-        heapq.heappush(h, value)
+        heapq.heappush(h, -1 * value)
 
     # 힙에 삽입된 모든 원소를 차례대로 꺼내어 담기
     for i in range(len(h)):
-        result.append(heapq.heappop(h))
+        result.append(-1 * heapq.heappop(h))
 
     return result
 
@@ -30,15 +30,4 @@ res = heapSort(arr)
 
 for i in range(n):
     print(res[i])
-
-"""
-7
-3
-29  
-69
-12 
-0
-32
-8
-"""
 
