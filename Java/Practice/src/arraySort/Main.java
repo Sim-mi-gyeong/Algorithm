@@ -139,7 +139,7 @@ public class Main {
         }
 
         // TODO 3. Comparator.comparing() 사용
-        
+
         int[][] arr3 = new int[][]{{5, 40}, {3, 50}, {1, 30}, {4, 20}, {2, 10}};
 
         Arrays.sort(arr3, Comparator.comparingInt((int[] o) -> o[0]));   //  첫번째 기준 오름차순
