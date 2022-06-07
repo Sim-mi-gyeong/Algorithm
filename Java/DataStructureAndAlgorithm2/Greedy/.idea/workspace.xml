@@ -2,20 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae7ae419-2e5e-47c1-a23d-bdd540373052" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Approximation/src/approximateVertexCover/ApproxVertexCover.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Approximation/src/backtracking/DuplicatedPermutation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Backtracking/src/hamiltonian/Hamiltonian.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Backtracking/src/permutation/DuplicatedPermutation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../DP/src/floyd/Floyd.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fractionalKnapsack/FractionalKnapsack.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../BOJ/구현/14503.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../BOJ/구현/14503.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../BOJ/그래프 이론/9205.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../BOJ/그래프 이론/9205.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../BOJ/그리디/11000.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../BOJ/그리디/11000.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../BOJ/그리디/11399.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../BOJ/그리디/11399.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../BOJ/그리디/13305.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../BOJ/그리디/13305.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../BOJ/기하학/3009.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../BOJ/기하학/3009.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../BOJ/수학/10950.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../BOJ/수학/10950.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DP/src/cutRot/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DP/src/cutRot/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../ex3.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../ex3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../이코테/Ch5_DFS_BFS/미로 탈출.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../이코테/Ch5_DFS_BFS/미로 탈출.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
@@ -29,6 +40,31 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RunManager">
+    <configuration name="FractionalKnapsack" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="fractionalKnapsack.FractionalKnapsack" />
+      <module name="Greedy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fractionalKnapsack.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.FractionalKnapsack" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -40,5 +76,17 @@
       <updated>1651024916862</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
