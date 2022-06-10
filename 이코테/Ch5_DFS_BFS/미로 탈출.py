@@ -1,8 +1,4 @@
 # n, m = map(int, input().split())
-
-# # 현재 위치 1, 1 -> n, m 까지 움직여 탈출
-# # 괴물이 있는 부분: 0, 괴물이 없는 부분: 1
-# # 칸을 셀 때는 시작 + 마지막도 포함
 # graph = []
 # for i in range(n):
 #     graph.append(list(map(int, input())))
