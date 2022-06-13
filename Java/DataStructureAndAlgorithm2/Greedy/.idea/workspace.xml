@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae7ae419-2e5e-47c1-a23d-bdd540373052" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/cardSort/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/coinChange/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../BOJ/구현/14503.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../BOJ/구현/14503.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../BOJ/그래프 이론/9205.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../BOJ/그래프 이론/9205.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../BOJ/수학/10950.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../BOJ/수학/10950.py" afterDir="false" />
