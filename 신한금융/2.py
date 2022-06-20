@@ -4,7 +4,6 @@ def solution(music):
 
     white = [1, 3, 5, 7, 8, 10, 12]
     black = [2, 4, 6, 9, 11]
-    piano = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
     whiteDic = dict()
     for i in white:
