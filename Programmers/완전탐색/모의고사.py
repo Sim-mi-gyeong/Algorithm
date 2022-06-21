@@ -15,9 +15,8 @@ def solution(answers):
 
     result = [cnt1, cnt2, cnt3]
     maxVal = max(result)
-    for i in range(len(result)):
-        if result[i] == maxVal:
-            answer.append(i + 1)
+    answer = [i + 1 for i, v in enumerate(result) if v == maxVal]
+
     return answer
 
 
