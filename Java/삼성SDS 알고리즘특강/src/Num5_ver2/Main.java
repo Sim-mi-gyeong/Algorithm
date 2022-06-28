@@ -1,6 +1,5 @@
-package Num5;
-// 개미탈출
-// DP + 행렬 제곱
+package Num5_ver2;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
+// 개미탈출
 class Node {
     private int x, y, move;
 
@@ -57,7 +57,7 @@ public class Main {
                     }
                 }
                 else {
-//
+//                    cnt += 1;
                     cnt = (cnt + 1) % 1000000007;
                 }
             }
