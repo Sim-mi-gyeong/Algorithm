@@ -1,4 +1,5 @@
-package Num1;
+package Num1_ver2;
+
 // 마당 잔디 깎기
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,29 +39,36 @@ public class Main {
     static int n, m, d;
     static long[][] graph;
     static int[] arr;   // 각 일마다 기름 양
+    static PriorityQueue<Node> pq1, pq2;
 
-    public static long solution(int d, long[][] graph, int[] arr) {
+
+    public static long solution(int d, long[][] graph, int[] arr, PriorityQueue<Node> pq1, PriorityQueue<Node> pq2) {
         long answer = 0;
+
         for (int k = 0; k < d; k++) {
             long tmp = 0;
-
-            PriorityQueue<Node> pq = new PriorityQueue<>();
-            // 1일마다 잔디 자라기
-            for (int i = 1; i <= n; i++) {
-                for (int j = 1; j <= m; j++) {
-                    graph[i][j] += 1;
-                    // 여기서 시간 줄이기
-                    pq.offer(new Node(graph[i][j], i, j));
-                }
-            }
             // arr 의 k 번 만큼 우선순위 큐에서 빼내고 -> 값을 ans 에 추가 / 그 위치의 값을 1로
             for (int i = 0; i < arr[k]; i++) {
-                Node curr = pq.poll();
-                long val = curr.getVal();
-                tmp += (val - 1);
-                int nx = curr.getX();
-                int ny = curr.getY();
-                graph[nx][ny] = 1;
+                if (!pq1.isEmpty()) {
+                    Node curr = pq1.poll();
+                    long val = curr.getVal();
+                    val += (k + 1);
+                    tmp += (val - 1);
+                    int nx = curr.getX();
+                    int ny = curr.getY();
+                    graph[nx][ny] = 1;
+                    pq2.offer(new Node(graph[nx][ny], nx, ny));
+                } else {
+                    Node curr = pq2.poll();
+                    long val = curr.getVal();
+                    val += k;
+                    tmp += (val - 1);
+                    int nx = curr.getX();
+                    int ny = curr.getY();
+                    graph[nx][ny] = 1;
+                    pq2.offer(new Node(graph[nx][ny], nx, ny));
+                }
+
             }
             answer += ((k + 1) * tmp);
         }
@@ -82,11 +90,13 @@ public class Main {
                 d = Integer.parseInt(st.nextToken());   // 잔디 깎는 일수
 
                 graph = new long[n+1][m+1];
+                pq1 = new PriorityQueue<>();
+                pq2 = new PriorityQueue<>();
                 for (int i = 1; i <= n; i++) {
                     String[] str = br.readLine().split(" ");
                     for (int j = 1; j <= m; j++) {
                         graph[i][j] = Long.parseLong(str[j-1]);
-
+                        pq1.offer(new Node(graph[i][j], i, j));
                     }
                 }
                 arr = new int[d];
@@ -95,7 +105,7 @@ public class Main {
                     arr[i] = Integer.parseInt(st.nextToken());
                 }
 
-                long ans = solution(d, graph, arr);
+                long ans = solution(d, graph, arr, pq1, pq2);
                 System.out.println(String.format("#%d %d", tc, ans));
 
             }
