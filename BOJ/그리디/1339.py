@@ -1,71 +1,22 @@
-# 단어 수학
-# 두 자리 개수가 다를 때
-# GCF + ACDEB = 783 + 98654 = 99437 최대
+# 단어수학
 
 n = int(input())
 lst = [input() for _ in range(n)]
-lst.sort(key=lambda x: len(x), reverse=True)
-print(lst)
 
+dic = dict()
+for i in range(len(lst)):
+    for j in range(len(lst[i])):
+        alpha = lst[i][j]
+        if not alpha in dic:
+            dic[alpha] = 10 ** (len(lst[i]) - j - 1)
+        else:
+            dic[alpha] += 10 ** (len(lst[i]) - j - 1)
 
-def wordCount(word, tmp):
-    maxIdx = 9
-    idx = maxIdx
-    for j in word:
-        while visited[idx] and idx > 0:
-            idx -= 1
-        if not visited[idx]:
-            visited[idx] = 1
-            if j in dic:
-                tmp += str(dic[j])
-            else:
-                dic[j] = idx
-                tmp += str(dic[j])
-
-    print(tmp)
-    return int(tmp)
-
-
-visited = [0] * 10  # 0 ~ 9
-dic = dict()  # {A : 9, B : 8, ... }
-
-
-# maxIdx = 9
-# idx = maxIdx
+dic = dict(sorted(dic.items(), key=lambda x: x[1], reverse=True))
 ans = 0
-val = 0
+maxVal = 9
+for k, v in dic.items():
+    ans += v * maxVal
+    maxVal -= 1
 
-for i in lst:
-    tmp = ""
-    # 백트래킹
-    val += wordCount(i, tmp)
-    ans = max(ans, val)
-
-    # visited[idx] = 0
-    # tmp = int(tmp)
-    # tmp -= dic[j]
-    # del dic[j]
-    # tmp = str(tmp)
-
-    # print(tmp)
-    # val += int(tmp)
-    # ans = max(ans, val)
-
-print(dic)
 print(ans)
-
-
-'''
-ABB
-BB
-BB
-BB
-BB
-BB
-BB
-BB
-BB
-BB
-1790
-
-'''
