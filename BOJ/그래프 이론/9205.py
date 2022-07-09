@@ -7,9 +7,8 @@ num = 20
 dis = 50
 INF = int(1e9)
 
-t = int(input())  # TC 개수
+t = int(input())
 for _ in range(t):
-    # lst = []
     path = []
     n = int(input())  # 편의점 개수
     # ans = [[INF] * n for _ in range(n)]
