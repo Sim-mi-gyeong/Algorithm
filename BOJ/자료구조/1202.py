@@ -1,5 +1,5 @@
 # 보석도둑
-# 가방에는 최대 한 개의 보석만 넣을 수 있다.
+# 가방에는 최대 한 개의 보석만 넣을 수 있다
 import heapq
 
 n, k = map(int, input().split())
