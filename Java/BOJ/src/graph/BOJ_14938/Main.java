@@ -44,7 +44,7 @@ public class Main {
     static ArrayList<ArrayList<Node>> graph = new ArrayList<>();
 
     public static int dijkstra(int start) {
-
+        // 가장 최단 거리가 짧은 노드를 고를 때마다, 해당 노드까지의 거리는 더이상 바뀌지 않음
         PriorityQueue<Node> pq = new PriorityQueue<>();
         d = new int[n+1];
         Arrays.fill(d, INF);
