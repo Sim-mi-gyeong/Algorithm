@@ -21,7 +21,6 @@ while heapBag:
         print("price, weight : ", price, weight)
     else:
         break
-
     # 가방 가능 무게에 대해
     if len(heapBag):
         popBagVal = -heapBag[0]
@@ -57,4 +56,3 @@ print(ans)
 
 answer : 210
 """
-
