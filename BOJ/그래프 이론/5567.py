@@ -23,12 +23,10 @@ def bfs(start):
 
     while q:
         v = q.popleft()
-        # 자신의 친구에 대해
         for i in graph[v]:
             if visited[i] == 0 and visited[v] <= 2:
                 visited[i] = visited[v] + 1
                 cnt += 1
-                # print("i : ", i, " cnt : ", cnt, "  visitied[i] : ", visited[i])
                 q.append(i)
 
     return cnt
