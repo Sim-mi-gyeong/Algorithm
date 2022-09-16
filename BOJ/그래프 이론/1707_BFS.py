@@ -1,22 +1,27 @@
 # 이분 그래프 O(V+E)
 
 import sys
+from collections import deque
 
-sys.setrecursionlimit(10 ** 6)
 input = sys.stdin.readline
 k = int(input())
 
 
-def dfs(graph, color, start, red):
+def bfs(graph, color, start, red):
     global check
-
+    q = deque()
     color[start] = red
-    for i in graph[start]:
-        if color[i] == red:
-            check = False
-            return
-        if color[i] == 0:
-            dfs(graph, color, i, -red)
+    q.append((start, red))
+
+    while q:
+        v, col = q.popleft()  # 정점, 색깔
+        for i in graph[v]:
+            if color[i] == col:
+                check = False
+                return
+            if color[i] == 0:
+                color[i] = -col
+                q.append((i, color[i]))
 
 
 for _ in range(k):
@@ -34,7 +39,7 @@ for _ in range(k):
         if not check:
             break
         if color[i] == 0:
-            dfs(graph, color, i, 1)
+            bfs(graph, color, i, 1)
 
     if check:
         print("YES")
