@@ -5,20 +5,17 @@ import sys
 input = sys.stdin.readline
 num = 20
 dis = 50
-INF = int(1e9)
 
 t = int(input())
 for _ in range(t):
     path = []
     n = int(input())  # 편의점 개수
-    # ans = [[INF] * n for _ in range(n)]
-    startX, startY = map(int, input().split())
+    startX, startY = map(int, input().split())  # 집
     path.append((startX, startY))
     for _ in range(n):
-        midX, midY = map(int, input().split())
-        # lst.append((midX, midY))
+        midX, midY = map(int, input().split())  # 편의점 좌표
         path.append((midX, midY))
-    endX, endY = map(int, input().split())
+    endX, endY = map(int, input().split())  # 페스티벌 위치
     path.append((endX, endY))
 
     for i in range(len(path[:-1])):
@@ -34,8 +31,6 @@ for _ in range(t):
 
     if check == 1:
         print("happy")
-    # else:
-    #     print('sad')
 
 
 """
