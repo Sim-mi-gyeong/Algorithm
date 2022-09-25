@@ -1,225 +1,183 @@
-# 감시
-# 회전은 항상 90도 / 감시하려고 하는 방향이 가로 또는 세로 방향
-
-# 각 CCTV 마다 / 각 CCTV 가 있는 위치마다 / 방향 조합 중 한 가지를 선정 했을 때 사각지대 Count
-
 import sys
-from collections import deque
-
-# 북 동 남 서
-nx = [-1, 0, 1, 0]
-ny = [0, 1, 0, -1]
+import copy
 
 input = sys.stdin.readline
 n, m = map(int, input().split())
-cctv = dict()
-print(cctv)
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+
+camera = []
 graph = []
-
 for i in range(n):
-    tmp = list(input().split())
+    tmp = list(map(int, input().split()))
     graph.append(tmp)
-    for j in range(len(tmp)):
-        key = int(tmp[j])
-        if 1 <= key <= 5:
-            if key not in cctv:
-                cctv[key] = [(i, j)]
-            else:
-                cctv[key].append((i, j))
-
-print(cctv)
-
-# tmp = list(combinations())
-# tmp = []
-# import copy   # copy.deepcopy()
-graphCopy = graph[:]
+    for j in range(m):
+        if 1 <= tmp[j] <= 5:
+            camera.append((i, j))
 
 
-def watch():
-    for key, value in cctv.items():
-        print("(key, value) : ", (key, value))
-        if key == 1:  # 1번일 때 가능한 방향은 4가지이며, cctv가 1번인 위치에서
-            directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-            # 상하좌우
-            for val in value:  # 각 위치마다 방향 잡기
-                x, y = val[0], val[1]  # 현재 위치
-                # 각 위치마다 방향 잡기
-                for i in range(4):
-                    if i == 0:
-                        top(x, y)
-                    elif i == 1:
-                        down(x, y)
-                    elif i == 2:
-                        left(x, y)
-                    elif i == 3:
-                        right(x, y)
-                    graphCopy = graph[:]
-
-        elif key == 2:
-            # 상하 / 좌우
-            directions = [[(-1, 0), (1, 0)], [(0, -1), (0, 1)]]
-            for val in value:
-                x, y = val[0], val[1]  # 현재 위치
-                for i in range(2):
-                    if i == 0:
-                        top(x, y)
-                        down(x, y)
-                    elif i == 1:
-                        left(x, y)
-                        right(x, y)
-                    graphCopy = graph[:]
-
-        elif key == 3:
-            # 시계방향으로
-            # 상우 / 하우 / 하좌 / 상좌
-            directions = [
-                [(-1, 0), (0, 1)],
-                [(1, 0), (0, 1)],
-                [(1, 0), (-1, 0)],
-                [(-1, 0), (0, -1)],
-            ]
-            for val in value:
-                x, y = val[0], val[1]  # 현재 위치
-                for i in range(4):
-                    if i == 0:
-                        top(x, y)
-                        right(x, y)
-                    elif i == 1:
-                        down(x, y)
-                        right(x, y)
-                    elif i == 2:
-                        down(x, y)
-                        left(x, y)
-                    elif i == 3:
-                        top(x, y)
-                        left(x, y)
-                    graphCopy = graph[:]
-
-        elif key == 4:
-            # 시계방향으로
-            # 상좌우 / 상하우 / 하좌우 / 상하좌
-            directions = [
-                [(-1, 0), (0, -1), (1, 0)],
-                [(-1, 0), (1, 0), (0, 1)],
-                [(1, 0), (0, -1), (0, 1)],
-                [(-1, 0), (1, 0), (0, -1)],
-            ]
-            for val in value:
-                x, y = val[0], val[1]  # 현재 위치
-                for i in range(4):
-                    if i == 0:
-                        top(x, y)
-                        left(x, y)
-                        right(x, y)
-                    elif i == 1:
-                        top(x, y)
-                        down(x, y)
-                        right(x, y)
-                    elif i == 2:
-                        down(x, y)
-                        left(x, y)
-                        right(x, y)
-                    elif i == 3:
-                        top(x, y)
-                        down(x, y)
-                        left(x, y)
-
-        elif key == 5:
-            # 상하좌우 전체
-            for val in value:
-                for d in range(len(dx)):
-                    x, y = val[0], val[1]
-                    while 0 <= x < n and 0 <= y < m:
-                        if graph[x][y] == "0":
-                            graph[x][y] = "#"
-                        x += dx[d]
-                        y += dy[d]
-
-            top(x, y)
-            right(x, y)
-            down(x, y)
-            left(x, y)
-            graphCopy = graph[:]
-
-
-watch()
-minCnt = 1e9
-
-
-def cctv1():
-    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    # 상하좌우
-
-    # 각 위치에서 cctv1 이 호출되면 -> directions 의 각 원소를 한 번씩
-    for val in directions:
-        for d in range(len(dx)):
-            x, y = val[0], val[1]
-            while 0 <= x < n and 0 <= y < m:
-                if graph[x][y] == "6":
-                    break
-                elif graph[x][y] == "0":
-                    graph[x][y] = "#"
-                x += dx[d]
-                y += dy[d]
-
-
-def top(x, y):  # (x, y) 는 현재 위치
-    loc = [-1, 0]
-    # 현재 위치 기준으로 위쪽 부분 처리
+def top(graph, x, y):  # (-1, 0)
+    dir = [-1, 0]
     while 0 <= x < n and 0 <= y < m:
-        if graph[x][y] == "6":
+        if graph[x][y] == 6:
             break
-        elif graph[x][y] == "0":
+        if graph[x][y] == 0:
             graph[x][y] = "#"
-        x += dx[loc[0]]
-        y += dy[loc[1]]
+        x += dir[0]
+        y += dir[1]
 
 
-def down(x, y):
-    loc = [1, 0]
-
+def down(graph, x, y):
+    dir = [1, 0]
     while 0 <= x < n and 0 <= y < m:
-        if graph[x][y] == "6":
+        if graph[x][y] == 6:
             break
-        elif graph[x][y] == "0":
+        if graph[x][y] == 0:
             graph[x][y] = "#"
-        x += dx[loc[0]]
-        y += dy[loc[1]]
+        x += dir[0]
+        y += dir[1]
 
 
-def left(x, y):
-    loc = [0, -1]
-
+def left(graph, x, y):
+    dir = [0, -1]
     while 0 <= x < n and 0 <= y < m:
-        if graph[x][y] == "6":
+        if graph[x][y] == 6:
             break
-        elif graph[x][y] == "0":
+        if graph[x][y] == 0:
             graph[x][y] = "#"
-        x += dx[loc[0]]
-        y += dy[loc[1]]
+        x += dir[0]
+        y += dir[1]
 
 
-def right(x, y):
-    loc = [0, 1]
+def right(graph, x, y):
+    dir = [0, 1]
     while 0 <= x < n and 0 <= y < m:
-        if graph[x][y] == "6":
+        if graph[x][y] == 6:
             break
-        elif graph[x][y] == "0":
+        if graph[x][y] == 0:
             graph[x][y] = "#"
-        x += dx[loc[0]]
-        y += dy[loc[1]]
+        x += dir[0]
+        y += dir[1]
 
 
-def count():
-    global minCnt
-    cnt = 0
-    for i in range(n):
-        for j in range(m):
-            if graph[i][j] == "0" or graph[i][j] == "6":
-                cnt += 1
-    minCnt = min(minCnt, cnt)
+def cctv1(graph, x, y, cnt):
+    # 상 하 좌 우
+    if cnt == 0:
+        top(graph, x, y)
+    elif cnt == 1:
+        down(graph, x, y)
+    elif cnt == 2:
+        left(graph, x, y)
+    elif cnt == 3:
+        right(graph, x, y)
+
+    return graph
 
 
-print(minCnt)
+def cctv2(graph, x, y, cnt):
+    # 상 하 / 좌 우
+    if cnt % 2 == 0:
+        top(graph, x, y)
+        down(graph, x, y)
+    elif cnt % 2 == 1:
+        left(graph, x, y)
+        right(graph, x, y)
+
+    return graph
+
+
+def cctv3(graph, x, y, cnt):
+    # 상 우 / 우 하 / 하 좌 / 상 좌
+    if cnt == 0:
+        top(graph, x, y)
+        right(graph, x, y)
+    elif cnt == 1:
+        down(graph, x, y)
+        right(graph, x, y)
+    elif cnt == 2:
+        down(graph, x, y)
+        left(graph, x, y)
+    elif cnt == 3:
+        top(graph, x, y)
+        left(graph, x, y)
+
+    return graph
+
+
+def cctv4(graph, x, y, cnt):
+    # 좌 상 우 / 상 우 하 / 좌 하 우 / 상 좌 하
+    if cnt == 0:
+        top(graph, x, y)
+        left(graph, x, y)
+        right(graph, x, y)
+    elif cnt == 1:
+        top(graph, x, y)
+        down(graph, x, y)
+        right(graph, x, y)
+    elif cnt == 2:
+        down(graph, x, y)
+        left(graph, x, y)
+        right(graph, x, y)
+    elif cnt == 3:
+        top(graph, x, y)
+        down(graph, x, y)
+        left(graph, x, y)
+
+    return graph
+
+
+def cctv5(graph, x, y):
+    # 상 하 좌 우
+    top(graph, x, y)
+    down(graph, x, y)
+    left(graph, x, y)
+    right(graph, x, y)
+
+    return graph
+
+
+def checkSize(graph):
+    size = 0
+    for i in range(len(graph)):
+        for j in range(len(graph[0])):
+            if graph[i][j] == 0:
+                size += 1
+    return size
+
+
+minVal = 1e9
+
+
+def backtracking(graph, n=0):
+    global minVal
+
+    if minVal == 0:
+        return
+
+    if n == len(camera):
+        size = checkSize(graph)
+        minVal = min(minVal, size)
+        return
+
+    startX, startY = camera[n][0], camera[n][1]
+    cctv = graph[startX][startY]
+
+    for i in range(4):  # 각 방향 종류(4가지, 혹은 2가지, 1가지 방향 조합) 에 대해 -> CCTV
+        copyGraph = copy.deepcopy(graph)  # 이전 연산 결과(CCTV 감시 처리)가 저장된 graph
+        # copyGraph = graph[:]
+        if cctv == 1:
+            backtracking(cctv1(copyGraph, startX, startY, i), n + 1)
+        elif cctv == 2:
+            backtracking(cctv2(copyGraph, startX, startY, i), n + 1)
+        elif cctv == 3:
+            backtracking(cctv3(copyGraph, startX, startY, i), n + 1)
+        elif cctv == 4:
+            backtracking(cctv4(copyGraph, startX, startY, i), n + 1)
+        else:
+            backtracking(cctv5(copyGraph, startX, startY), n + 1)
+
+
+if len(camera) == 0:
+    print(checkSize(graph))
+    exit(0)
+else:
+    backtracking(graph)
+    print(minVal)
