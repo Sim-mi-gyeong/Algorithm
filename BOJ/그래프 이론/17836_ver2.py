@@ -15,12 +15,11 @@ for i in range(n):
 
 
 visited = [[0] * m for _ in range(n)]
-
-check = False
+gramTime = 1e9
 
 
 def bfs(startX, startY, visited):
-    global check
+    global gramTime
     q = deque()
     q.append((startX, startY, 0))
 
@@ -28,40 +27,30 @@ def bfs(startX, startY, visited):
         x, y, time = q.popleft()
         if x == gramX and y == gramY:
             gramTime = time + abs(n - 1 - gramX) + abs(m - 1 - gramY)
-            if gramTime <= t:
-                return gramTime
         if x == n - 1 and y == m - 1:
-            if time <= t:
-                return time
+            gramTime = min(gramTime, time)
 
         for i in range(len(dx)):
             nx = x + dx[i]
             ny = y + dy[i]
             if 0 <= nx < n and 0 <= ny < m and not visited[nx][ny]:
-                if graph[nx][ny] == 0:
+                if graph[nx][ny] == 0 or graph[nx][ny] == 2:
                     visited[nx][ny] = 1
                     q.append((nx, ny, time + 1))
-                # elif graph[nx][ny] == 2:
-                #     # 그람을 찾은 경우 -> 그 위치에서 바로 탐색하도록
-                #     check = True
-                #     visited[nx][ny] == 1
-                #     q.appendleft((nx, ny, time + 1))
-                # elif graph[nx][ny] == 1 and check:
-                #     visited[nx][ny] == 1
-                #     q.append((nx, ny, time + 1))
 
-    return "Fail"
+    return gramTime
 
 
-print(bfs(0, 0, visited))
-
+tmpTime = bfs(0, 0, visited)
+print(tmpTime if tmpTime <= t else "Fail")
 
 """
-3 3 1
-0 1 0
-2 1 0
-0 1 0
+5 4 100
+0 1 2 1
+0 1 0 1
+0 0 0 0
+1 1 1 1
+0 0 0 0
 
-answer : Fail
+answer : 11
 """
-
