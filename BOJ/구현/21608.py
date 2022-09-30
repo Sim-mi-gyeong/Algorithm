@@ -1,3 +1,5 @@
+# 상어 초등학교
+
 import sys
 
 input = sys.stdin.readline
