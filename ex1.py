@@ -1,6 +1,6 @@
-# 16236번 아기상어
 from collections import deque
 import sys
+import heapq
 
 input = sys.stdin.readline
 dx, dy = [-1, 1, 0, 0], [0, 0, -1, 1]
@@ -8,111 +8,77 @@ dx, dy = [-1, 1, 0, 0], [0, 0, -1, 1]
 n = int(input())
 graph = []
 fish = []
+emptyCnt = 0
 for i in range(n):
     tmp = list(map(int, input().split()))
     graph.append(tmp)
     for j in range(n):
         if tmp[j] == 9:
             startX, startY = i, j
-        elif 1 <= tmp[j] <= 6:
-            fish.append((i, j, tmp[j]))
+        elif tmp[j] == 0:
+            emptyCnt += 1
+
+# 물고기가 하나도 없는 경우(빈 공간 개수 = 전체 - 상어 개수) -> 0 출력 후 종료
+zeroCnt = n * n - 1
+if zeroCnt == emptyCnt:
+    print(0)
+    exit(0)
 
 graph[startX][startY] = 0
 
 
-def check_dist(currX, currY, currSize, targetX, targetY):
+def find_and_check(currX, currY, currSize):
+    enable_fish_list = []
     q = deque()
-    q.append((currX, currY, 0))
     visited = [[0] * n for _ in range(n)]
+    q.append((currX, currY, 0, currSize))
     visited[currX][currY] = 1
 
     while q:
-        x, y, dist = q.popleft()
-        if x == targetX and y == targetY:
-            return dist
+        x, y, time, size = q.popleft()
         for i in range(len(dx)):
             nx = x + dx[i]
             ny = y + dy[i]
             if 0 <= nx < n and 0 <= ny < n and not visited[nx][ny]:
-                if graph[nx][ny] <= currSize:
-                    q.append((nx, ny, dist + 1))
+                # 빈 공간 or 자신과 크기가 같은 물고기 -> 지나갈 수만 있음
+                if graph[nx][ny] == 0 or graph[nx][ny] == currSize:
                     visited[nx][ny] = 1
+                    q.append((nx, ny, time + 1, graph[nx][ny]))
+                # 자신보다 크기가 작은 물고기 -> 먹을 수 있음
+                elif graph[nx][ny] < currSize:
+                    visited[nx][ny] = 1
+                    q.append((nx, ny, time + 1, graph[nx][ny]))
+                    # 거리 -> x좌표 -> y좌표 기준 정렬을 위한 최소 힙에 타겟 후보 물고기 추가
+                    heapq.heappush(enable_fish_list, (time + 1, nx, ny, graph[nx][ny]))
 
-    return int(1e9)
-
-
-# 먹을 수 있는 물고기 체크
-def check_enable(currX, currY, currSize):
-    # 먹을 수 있는 물고기
-    enable_fish_list = []
-    for i, j, size in fish:
-        # tmpDist = abs(currX - i) + abs(currY - j)
-        tmpDist = check_dist(currX, currY, currSize, i, j)
-        if currSize > size:
-            enable_fish_list.append((i, j, size, tmpDist))
-
-    enable_fish_list = sorted(enable_fish_list, key=lambda x: (x[3], x[0], x[1], x[2]))
-
-    return enable_fish_list
+    # 먹을 수 있는 물고기가 없는 겨우
+    if len(enable_fish_list) == 0:
+        return 0
+    else:
+        return enable_fish_list[0]
 
 
-# 가장 가까운 물고기 찾기
-def shortest_fish(enable_fish_list):
-    return enable_fish_list[0]
-
-
-# 물고기를 먹으러 가기
-def eat(currX, currY, currSize, currCnt, currTime, target):
-    # 현재 위치부터 목표 위치까지 물고기를 먹기
-    q = deque()
-    q.append((currX, currY, currSize, currCnt, currTime))
-
-    while q:
-        x, y, currSize, currCnt, currTime = q.popleft()
-        # 목표 지점에 도달한 경우
-        if x == target[0] and y == target[1]:
-            # 물고기를 먹은 자리 빈 공간 처리
-            graph[x][y] = 0
-            # 물고기를 먹을 수 있고 -> 현재까지 먹은 개수와 자신의 크기를 비교
-            if currCnt + 1 == currSize:
-                # 자신의 크기 + 1 / 먹은 개수 0 으로 초기화
-                return x, y, currSize + 1, 0, currTime
-            # 물고기를 먹을 수 있고 -> 현재까지 먹은 개수와 자신의 크기를 비교
-            elif currCnt + 1 < currSize:
-                return x, y, currSize, currCnt + 1, currTime
-
-        for i in range(len(dx)):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if 0 <= nx < n and 0 <= ny < n:
-                # 다음 칸이 현재 자신의 크기보다 작은 경우 -> 지나갈 수 있음
-                if graph[nx][ny] <= currSize:
-                    q.append((nx, ny, currSize, currCnt, currTime + 1))
-
-
-initSize = 2
-eatCnt = 0
-sharkSize = initSize
-initTime = 0
+sharkSize = 2
 totalTime = 0
+eatCnt = 0
 while True:
 
-    fish_list = check_enable(startX, startY, sharkSize)
-    # 더 이상 먹을 수 있는 물고기가 없는 경우
-    if len(fish_list) == 0:
+    target = find_and_check(startX, startY, sharkSize)
+    # 먹을 수 있는 물고기가 없는 경우
+    if not target:
         break
-    target_fish = shortest_fish(fish_list)
-    # 더 이상 도달할 수 있는 물고기가 없는 경우
-    if target_fish[3] >= int(1e9):
-        break
-    target_fish = (target_fish[0], target_fish[1], target_fish[2])
 
-    nx, ny, sharkSize, eatCnt, time = eat(startX, startY, sharkSize, eatCnt, 0, target_fish)
-    startX, startY = nx, ny
-    # time 은 한 개의 물고기를 먹으러 갈 때까지 걸린 시간
-    totalTime += time
+    targetTime, targetX, targetY, targetSize = target[0], target[1], target[2], target[3]
 
-    # 먹은 물고기 제거
-    fish.remove(target_fish)
+    totalTime += targetTime  # 시간 추가
+    if eatCnt + 1 == sharkSize:  # 상어 크기 및 현재까지 먹은 물고기 수 처리
+        sharkSize += 1
+        eatCnt = 0
+    else:
+        eatCnt += 1
+    # 먹은 물고기 자리 빈 공간 처리
+    graph[targetX][targetY] = 0
+    # 상어 이동 처리
+    startX, startY = targetX, targetY
 
 print(totalTime)
