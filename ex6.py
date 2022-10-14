@@ -99,3 +99,14 @@ print("시계 방향 270도 회전 그래프")
 for row in rotate_270_graph:
     print(row)
 print()
+
+
+sample_list = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+new_list = [[], [], []]
+
+for i in range(len(sample_list)):
+    for j in range(len(sample_list[i])):
+        new_list[i].append(sample_list[j][i])
+print("배열 뒤집기 전 : ", sample_list)
+print("배열 뒤집기 후 : ", new_list)
+
