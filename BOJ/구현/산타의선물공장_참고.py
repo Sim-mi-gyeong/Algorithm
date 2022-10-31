@@ -70,6 +70,7 @@ class Belt:
 class Factory:
     def __init__(self, args):
         N, M, *presents = args
+        print("N: ", N, " M : ", M, " presents : ", presents)
         counts = N // M
         self.belts = [Belt() for _ in range(M)]
         print("self.belts : ", self.belts)
@@ -144,8 +145,11 @@ class Factory:
                     if self.belts[idx % len(self.belts)].broken == False:
                         found_belt = self.belts[idx % len(self.belts)]
 
+                        print("고장난 벨트의 상자 : ", broken_belt.box_dict)
+                        print("옮겨갈 벨트의 상자 : ", found_belt.box_dict)
                         found_belt.box_dict.update(broken_belt.box_dict)
                         broken_belt.box_dict = {}
+                        print("옮긴 후 벨트의 상자 : ", found_belt.box_dict)
 
                         found_belt.add_box(broken_belt.first_box)
                         found_belt.last_box = broken_belt.last_box

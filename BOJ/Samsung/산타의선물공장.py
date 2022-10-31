@@ -1,134 +1,226 @@
-from collections import deque
 import sys
 
 input = sys.stdin.readline
 
-# 벨트 고장
-def cmd_500(b_num):
-    global belts, id_belts, belts_status, broken_belts
-    if b_num in broken_belts:
-        print(-1)
-        return
 
-    next_belt = b_num + 1 if b_num != len(belts) else 1
-    while next_belt in broken_belts:
-        next_belt = b_num + 1 if b_num != len(belts) else 1
+class BOX:
+    def __init__(self, box_id, box_weight, belt_num):
+        self.box_id = box_id
+        self.box_weight = box_weight
+        self.belt_num = belt_num
+        self.prev_box = None
+        self.next_box = None
 
-    broken_belts.add(b_num)
-    if not belts[b_num]:
-        del belts[b_num]
-        return
+    def set_prev(self, prev_box):
+        self.prev_box = prev_box
 
-    belts[next_belt].extend(belts[b_num])
-    del belts[b_num]
+    def set_next(self, next_box):
+        self.next_box = next_box
 
-    for box_id, box_belt in id_belts.items():
-        if box_belt == b_num:
-            id_belts[box_id] = next_belt
+    def remove_prev(self):
+        if self.prev_box == None:
+            return
+        self.prev_box = None
 
-    print(b_num)
-    return
+    # def remove_next(self):
+    #     if self.next_box == None:
+    #         return
 
+    #     self.next_box.prev_box = None
+    #     self.next_box = None
 
-# 물건 확인
-def cmd_400(id):
-    global belts, id_belts
-    target_b_num = -1
-    if id in id_belts:
-        target_b_num = id_belts[id]
-        while belts[target_b_num][0][0] != id:
-            # belts[target_b_num].appendleft(belts[target_b_num].pop())
-            belts[target_b_num].rotate(-1)
+    def remove_box(self):
 
-    print(target_b_num)
-    return
+        if self.prev_box:
+            self.prev_box.next_box = self.next_box
+        if self.next_box:
+            self.next_box.prev_box = self.prev_box
+
+        self.prev_box = None
+        self.next_box = None
 
 
-# 물건 제거
-def cmd_300(id):
-    global belts, id_belts, id_weight
-    return_num = -1
-    if id in id_belts:
-        return_num = id
-        b_num = id_belts[id]
-        remove_box = id_weight[id]
-        belts[b_num].remove(remove_box)  ###
-        del id_belts[id]
-        del id_weight[id]
+class BELT:
+    def __init__(self, belt_num):
+        self.belt_num = belt_num
+        self.front = None
+        self.end = None
+        self.box_dict = dict()
+        self.broken = False
 
-    print(return_num)
-    return
+    # 벨트의 뒤로 상자 싣기
+    def push_box(self, box):
+        self.box_dict[box.box_id] = box
 
+        if not self.front:
+            self.front = box
 
-# 물건 하차
-def cmd_200(w):
-    global belts, id_belts
-    total = 0
-    for i in belts:
-        if not belts[i]:
-            continue
-        if belts[i][0][1] <= w:
-            box_id, box_weigth = belts[i].popleft()
-            del id_belts[box_id]
-            del id_weight[box_id]
-            total += box_weigth
+        if self.end:
+            self.end.set_next(box)
+            box.set_prev(self.end)
+
+        self.end = box
+
+    # 벨트의 가장 첫 번째 상자 하차
+    def drop_box(self):
+
+        pop_box = self.front
+        self.front = pop_box.next_box
+
+        pop_box.next_box = None
+
+        if self.front:
+            self.front.remove_prev()
         else:
-            # 벨트 맨 뒤로 상자 보내기
-            belts[i].rotate(-1)
-            # belts[i].popleft()
-            # belts[i].append(first_box)
-    print(total)
-    return
+            self.end = None
+
+        del self.box_dict[pop_box.box_id]
+
+        return pop_box
 
 
-# 공장 설립
-def cmd_100(n, m, line):
-    global belts, id_belts, id_weight, belts_status
-    belts = {i: deque() for i in range(1, m + 1)}
-    box_id = [int(next(line)) for _ in range(n)]
-    box_weight = [int(next(line)) for _ in range(n)]
+class FACTORY:
+    # 공장 설립
+    def __init__(self, line):
+        global n, m
+        n, m, *boxes = line
+        count = n // m
+        self.belts = [BELT(num) for num in range(1, m + 1)]
 
-    j = 0
-    for i in range(1, m + 1):
-        for _ in range(n // m):
-            belts[i].append((box_id[j], box_weight[j]))
-            id_belts[box_id[j]] = i
-            id_weight[box_id[j]] = (box_id[j], box_weight[j])
-            j += 1
-    return
+        for idx, belt in enumerate(self.belts):
+            for i in range(idx * count, (idx + 1) * count):
+                belt.push_box(BOX(boxes[i], boxes[i + n], idx + 1))
+
+    # 물건 하차
+    def cmd_200(self, w_max):
+        total = 0
+        for belt in self.belts:
+            if not belt.front:
+                continue
+
+            if belt.broken:
+                continue
+
+            pop_box = belt.drop_box()
+            if pop_box.box_weight <= w_max:
+                total += pop_box.box_weight
+            else:
+                belt.push_box(pop_box)
+
+        return total
+
+    # 물건 제거
+    def cmd_300(self, box_id):
+        return_num = -1
+
+        for belt in self.belts:
+            if box_id not in belt.box_dict:
+                continue
+
+            removed_box = belt.box_dict[box_id]
+
+            if belt.front == removed_box:
+                belt.front = removed_box.next_box
+            if belt.end == removed_box:
+                belt.end = removed_box.prev_box
+
+            removed_box.remove_box()
+            return_num = removed_box.box_id
+            del belt.box_dict[removed_box.box_id]
+            break
+
+        return return_num
+
+    # 물건 확인
+    def cmd_400(self, box_id):
+        return_num = -1
+
+        for belt_id, belt in enumerate(self.belts):
+            if box_id in belt.box_dict:
+                check_box = belt.box_dict[box_id]
+
+                if belt.front == None and belt.end == None:
+                    pass
+
+                elif belt.front == check_box:
+                    pass
+
+                elif belt.end == check_box:
+                    belt.front.set_prev(belt.end)
+                    belt.end.set_next(belt.front)
+                    belt.front = check_box
+                    belt.end = check_box.prev_box
+                    check_box.remove_prev()
+
+                else:
+                    belt.front.set_prev(belt.end)
+                    belt.end.set_next(belt.front)
+                    belt.front = check_box
+                    belt.end = check_box.prev_box
+                    check_box.remove_prev()
+
+                if belt.front != check_box:
+                    belt.front.set_prev(belt.end)
+                    belt.end.set_next(belt.front)
+                    belt.front = check_box
+                    belt.end = check_box.prev_box
+                    check_box.remove_prev()
+
+                return_num = belt.belt_num
+                # return_num = belt_id + 1
+                break
+
+        return return_num
+
+    # 벨트 고장
+    def cmd_500(self, b_num):
+        return_num = -1
+
+        if self.belts[b_num - 1].broken:
+            return return_num
+
+        return_num = b_num
+        broken_belt = self.belts[b_num - 1]
+        broken_belt.broken = True
+
+        target_b_num = b_num
+        while self.belts[target_b_num - 1].broken:
+            target_b_num += 1
+            if target_b_num > m:
+                target_b_num = 1
+
+        target_belt = self.belts[target_b_num - 1]
+
+        target_belt.box_dict.update(broken_belt.box_dict)
+
+        target_belt.end.next_box = broken_belt.front
+        broken_belt.front.prev_box = target_belt.end
+
+        for key, val in broken_belt.box_dict.items():
+            val.belt_num = target_b_num
+
+        target_belt.end = broken_belt.end
+
+        broken_belt.box_dict = dict()
+
+        broken_belt.front = broken_belt.end = None
+
+        return return_num
 
 
-id_belts = dict()
-id_weight = dict()
-belts = dict()
-belts_status = []
-broken_belts = set()
+q = int(input().strip())
+cmd, *line = map(int, input().split())
 
-q = int(input())
-for _ in range(q):
-    line = iter(input().split())
-    cmd = int(next(line))
-    if cmd == 100:
-        # 공장 설립
-        n, m = (int(next(line)), int(next(line)))
-        cmd_100(n, m, line)
-    elif cmd == 200:
-        # 물건 하차
-        w = int(next(line))
-        cmd_200(w)
+factory = FACTORY(line)
 
+for _ in range(q - 1):
+    cmd, arg = map(int, input().split())
+
+    if cmd == 200:
+        print(factory.cmd_200(arg))
     elif cmd == 300:
-        # 물건 제거
-        id = int(next(line))
-        cmd_300(id)
-
+        print(factory.cmd_300(arg))
     elif cmd == 400:
-        # 물건 확인
-        id = int(next(line))
-        cmd_400(id)
-
+        print(factory.cmd_400(arg))
     elif cmd == 500:
-        # 벨트 고장
-        id = int(next(line))
-        cmd_500(id)
-
+        print(factory.cmd_500(arg))
