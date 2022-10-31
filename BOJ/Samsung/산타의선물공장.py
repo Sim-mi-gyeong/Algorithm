@@ -52,7 +52,7 @@ def cmd_300(id):
         return_num = id
         b_num = id_belts[id]
         remove_box = id_weight[id]
-        belts[b_num].remove(remove_box)
+        belts[b_num].remove(remove_box)  ###
         del id_belts[id]
         del id_weight[id]
 
