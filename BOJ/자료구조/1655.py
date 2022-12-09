@@ -4,8 +4,9 @@ import heapq
 import sys
 
 n = int(sys.stdin.readline())
-leftHeap, rightHeap = [], []   # max heap, min heap
-'''
+leftHeap, rightHeap = [], []  # max heap, min heap
+
+"""
 for _ in range(n):
     a = int(input())
     if len(leftHeap) == len(rightHeap):   # 지금까지, 짝수 개를 불렀으면
@@ -22,7 +23,8 @@ for _ in range(n):
     print(leftHeap[0][1])
 
 print('leftHeap : ', leftHeap)
-'''
+"""
+
 
 for _ in range(n):
     num = int(sys.stdin.readline())
