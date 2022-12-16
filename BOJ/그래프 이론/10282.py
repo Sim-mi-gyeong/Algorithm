@@ -17,5 +17,5 @@ for _ in range(t):
     for _ in range(d):
         a, b, s = map(int, input().split())
 
-        cnt, time = solve()
-        print(cnt, time)
+    cnt, time = solve()
+    print(cnt, time)
