@@ -17,7 +17,7 @@ class Node {
 
 public class Main {
 
-    static int n, m, k, r, c, materialCnt;
+    static int n, m, k, r, c;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static final int[] dx = {-1, 1, 0, 0};
     static final int[] dy = {0, 0, -1, 1};
@@ -25,7 +25,7 @@ public class Main {
     public static int bfs(int startX, int startY, char[][] graph) {
         Queue<Node> q = new LinkedList<>();
         boolean[][] visited = new boolean[n][m];
-        int cnt = materialCnt;
+        int cnt = k;
 
         visited[startX][startY] = true;
         q.offer(new Node(startX, startY, 0));
@@ -89,13 +89,11 @@ public class Main {
                 }
             }
 
-            materialCnt = 0;
             for (int i = 0; i < k; i++) {
                 st = new StringTokenizer(br.readLine());
                 r = Integer.parseInt(st.nextToken());
                 c = Integer.parseInt(st.nextToken());
                 graph[r-1][c-1] = '0';
-                materialCnt += 1;
             }
 
             int ans = solve(graph);
