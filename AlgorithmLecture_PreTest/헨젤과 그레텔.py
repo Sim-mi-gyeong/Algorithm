@@ -7,15 +7,15 @@ dy = [0, 0, -1, 1]
 def bfs(startX, startY):
     # global n, m
     q = deque()
-    init_visited = [[0] * m for _ in range(n)]
+    visited = [[0] * m for _ in range(n)]
     # 경로를 추적할 그래프
     trackPath = [[0] * m for _ in range(n)]
 
-    init_visited[startX][startY] = 1
-    q.append((startX, startY, 0, list(), init_visited))
+    visited[startX][startY] = 1
+    q.append((startX, startY, 0, list()))
 
     while q:
-        x, y, cnt, path, visited = q.popleft()
+        x, y, cnt, path = q.popleft()
         print("(x, y, cnt, path) : ", (x, y, cnt, path))
 
         # 과자집에 도달할 때 이동 횟수
@@ -31,9 +31,9 @@ def bfs(startX, startY):
             if 0 <= nx < n and 0 <= ny < m:
                 # if not visited[nx][ny] and graph[nx][ny] == 1:
                 if graph[nx][ny] == 1:
-                    # visited[nx][ny] = 1
+                    visited[nx][ny] = 1
                     # (0, 0) 에서 (0, 1) 로 향하는 최소 이동 경로에서는, 다른 위치가 이미 방문처리 되어 있어서 방문을 하지 못하는 상태
-                    q.append((nx, ny, cnt + 1, path + [(nx, ny)], visited))
+                    q.append((nx, ny, cnt + 1, path + [(nx, ny)]))
                     # visited[nx][ny] = 0
 
 
@@ -94,4 +94,3 @@ for tc in range(1, t + 1):
 1 0 1 1
 
 """
-
