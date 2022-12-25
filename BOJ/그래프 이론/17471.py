@@ -1,5 +1,4 @@
 # 게리맨더링
-
 from collections import deque
 from itertools import combinations
 import sys
@@ -8,8 +7,8 @@ input = sys.stdin.readline
 
 n = int(input())
 pepole = [0] + list(map(int, input().split()))
-# graph = dict()
 graph = [[] for _ in range(n + 1)]
+
 for i in range(1, n + 1):
     cnt, *line = map(int, input().split())
     for num in line:
@@ -18,7 +17,7 @@ for i in range(1, n + 1):
 
 def bfs(regStart, reg):
     q = deque()
-    visited = [0] * (len(reg) + 1)
+    visited = [0] * (n + 1)
     popSum, visitedNum = 0, 0
 
     visited[regStart] = 1
@@ -28,8 +27,8 @@ def bfs(regStart, reg):
 
     while q:
         currReg = q.popleft()
-        for i in reg[currReg]:
-            if not visited[i]:
+        for i in graph[currReg]:
+            if i in reg and not visited[i]:
                 visited[i] = 1
                 q.append(i)
 
@@ -40,9 +39,7 @@ def bfs(regStart, reg):
 
 
 ans = 1e9
-
 for i in range(1, n // 2 + 1):
-    # 1 ~ n // 2 까지
     for regA in list(combinations(range(1, n + 1), i)):
         regA = list(regA)
         popSumA, visitedNumA = bfs(regA[0], regA)
@@ -52,6 +49,8 @@ for i in range(1, n // 2 + 1):
 
         if visitedNumA + visitedNumB == n:
             ans = min(ans, abs(popSumA - popSumB))
-        print()
 
-print(ans)
+if ans == 1e9:
+    print(-1)
+else:
+    print(ans)
