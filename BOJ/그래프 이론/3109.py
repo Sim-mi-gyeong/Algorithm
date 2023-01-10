@@ -16,6 +16,7 @@ visited = [[0] * c for _ in range(r)]
 
 
 def dfs(x, y):
+    visited[x][y] = 1
     if y == (c - 1):
         return True
 
@@ -23,7 +24,6 @@ def dfs(x, y):
         nx = x + dx[i]
         ny = y + dy[i]
         if 0 <= nx < r and 1 <= ny < c and not visited[nx][ny] and graph[nx][ny] != "x":
-            visited[nx][ny] = 1
             if dfs(nx, ny):
                 return True
 
