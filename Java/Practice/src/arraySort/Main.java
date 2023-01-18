@@ -112,7 +112,7 @@ public class Main {
 
         System.out.println();
 
-        // TODO 2. Lambda 사용 - Java 8 이상
+        // TODO 3. Lambda 사용 - Java 8 이상
 
         int[][] arr2 = new int[][]{{0, 3}, {2, 6}, {1, 9}, {1, 8}};
         Arrays.sort(arr2, (o1, o2) -> o1[0] == o2[0]? o1[1] - o2[1]: o1[0] - o2[0]);   // 첫번째 기준 오름차순 -> 두번째 기준 오름차순
@@ -138,7 +138,7 @@ public class Main {
             System.out.println();
         }
 
-        // TODO 3. Comparator.comparing() 사용
+        // TODO 4. Comparator.comparing() 사용
 
         int[][] arr3 = new int[][]{{5, 40}, {3, 50}, {1, 30}, {4, 20}, {2, 10}};
 
