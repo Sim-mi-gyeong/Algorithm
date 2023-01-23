@@ -20,13 +20,6 @@ for sharkNum in range(1, m + 1):
     y = c - 1
     d -= 1
 
-    x = h - x - 1
-
-    if d == 0:
-        d = 1
-    elif d == 1:
-        d = 0
-
     graph[x][y].append(sharkNum)
     shark_dic[sharkNum] = [x, y, s, d, z]
 
@@ -48,7 +41,7 @@ def catch(x):
     if len(shark_list) == 0:
         return
 
-    shark_list = sorted(shark_list, key=lambda x: x[1], reverse=True)
+    shark_list = sorted(shark_list, key=lambda x: x[1])
 
     catch_shark = shark_list[0]
     catch_shark_num, catch_shark_x, catch_shark_y, catch_shark_size = (
@@ -65,9 +58,10 @@ def catch(x):
 
 
 def move():
+    new_graph = [[[] for _ in range(w)] for _ in range(h)]
     for sharkNum, sharkInfo in shark_dic.items():
         x, y = sharkInfo[0], sharkInfo[1]
-        graph[x][y] = []
+        # graph[x][y] = []
         s, d, z = sharkInfo[2], sharkInfo[3], sharkInfo[4]
         if s == 0:
             nx, ny = x, y
@@ -87,11 +81,15 @@ def move():
 
                 x, y = nx, ny
 
-        graph[nx][ny].append(sharkNum)
+        new_graph[nx][ny].append(sharkNum)
 
         shark_dic[sharkNum][0] = nx
         shark_dic[sharkNum][1] = ny
         shark_dic[sharkNum][3] = d
+
+    for i in range(h):
+        for j in range(w):
+            graph[i][j] = new_graph[i][j]
 
     for i in range(h):
         for j in range(w):
@@ -124,3 +122,4 @@ while True:
 
 
 print(cnt)
+
