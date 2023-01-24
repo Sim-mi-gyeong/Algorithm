@@ -8,7 +8,7 @@ input = sys.stdin.readline
 n, k = map(int, input().rstrip().split())
 
 graph = []
-for i in range(n):
+for _ in range(n):
     tmp = list(map(int, input().rstrip().split()))
     graph.append(tmp)
 
@@ -26,7 +26,7 @@ for i in range(1, k + 1):
     graph_info[r][c].append(i)
 
 
-def checkUnder(horseNum, x, y, dir):
+def checkUnder(horseNum, x, y):
     flag = False
     if len(graph_info[x][y]) >= 1 and graph_info[x][y][0] == horseNum:
         flag = True
@@ -45,20 +45,35 @@ def changeDir(dir):
 
     return dir
 
-
 def move(horseNum, x, y, dir):
     nx = x + dx[dir]
     ny = y + dy[dir]
-    changeDirFlag = False
 
-    if not (0 <= nx < n and 0 <= ny < n):
+    if not (0 <= nx < n and 0 <= ny < n) or graph[nx][ny] == 2:
         newDir = changeDir(dir)
         horse[horseNum][2] = newDir
         nx = x + dx[newDir]
         ny = y + dy[newDir]
-        changeDirFlag = True
 
-    if graph[nx][ny] == 0:
+        if not (0 <= nx < n and 0 <= ny < n) or graph[nx][ny] == 2:
+            nx = x
+            ny = y
+
+        elif graph[nx][ny] == 0:
+            while graph_info[x][y]:
+                tmpHorseNum = graph_info[x][y].popleft()
+                graph_info[nx][ny].append(tmpHorseNum)
+                horse[tmpHorseNum][0] = nx
+                horse[tmpHorseNum][1] = ny
+
+        elif graph[nx][ny] == 1:
+            while graph_info[x][y]:
+                tmpHorseNum = graph_info[x][y].pop()
+                graph_info[nx][ny].append(tmpHorseNum)
+                horse[tmpHorseNum][0] = nx
+                horse[tmpHorseNum][1] = ny
+
+    elif graph[nx][ny] == 0:
         while graph_info[x][y]:
             tmpHorseNum = graph_info[x][y].popleft()
             graph_info[nx][ny].append(tmpHorseNum)
@@ -72,37 +87,6 @@ def move(horseNum, x, y, dir):
             horse[tmpHorseNum][0] = nx
             horse[tmpHorseNum][1] = ny
 
-    elif graph[nx][ny] == 2:
-        if changeDirFlag:
-            nx = x
-            ny = y
-        else:
-            newDir = changeDir(dir)
-            horse[horseNum][2] = newDir
-            nx = x + dx[newDir]
-            ny = y + dy[newDir]
-
-            if not (0 <= nx < n and 0 <= ny < n):
-                nx = x
-                ny = y
-            else:
-                if graph[nx][ny] == 0:
-                    while graph_info[x][y]:
-                        tmpHorseNum = graph_info[x][y].popleft()
-                        graph_info[nx][ny].append(tmpHorseNum)
-                        horse[tmpHorseNum][0] = nx
-                        horse[tmpHorseNum][1] = ny
-
-                elif graph[nx][ny] == 1:
-                    while graph_info[x][y]:
-                        tmpHorseNum = graph_info[x][y].pop()
-                        graph_info[nx][ny].append(tmpHorseNum)
-                        horse[tmpHorseNum][0] = nx
-                        horse[tmpHorseNum][1] = ny
-
-                elif graph[nx][ny] == 2:
-                    nx, ny = x, y
-
     if len(graph_info[nx][ny]) >= 4:
         return 1
 
@@ -110,7 +94,7 @@ def move(horseNum, x, y, dir):
 def solve():
     for horseNum, horseInfo in horse.items():
         x, y, dir = horseInfo[0], horseInfo[1], horseInfo[2]
-        if checkUnder(horseNum, x, y, dir):
+        if checkUnder(horseNum, x, y):
             if move(horseNum, x, y, dir):
                 return 1
 
