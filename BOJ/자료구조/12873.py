@@ -1,3 +1,4 @@
+# 기념품
 from collections import deque
 
 n = int(input())
