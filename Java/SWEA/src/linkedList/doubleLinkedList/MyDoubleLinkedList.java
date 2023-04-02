@@ -86,7 +86,7 @@ public class MyDoubleLinkedList<E> {
         tail = newNode;
         size++;
     }
-    
+
     public E get(int index) {
         return search(index).data;
     }
