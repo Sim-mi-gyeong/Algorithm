@@ -1,11 +1,7 @@
 # 마법사 상어와 블리자드
-
 import sys
 
 input = sys.stdin.readline
-
-# dx = [-1, 1, 0, 0]
-# dy = [0, 0, -1, 1]
 
 n, m = map(int, input().rstrip().split())
 sharkX, sharkY = int(n / 2), int(n / 2)
@@ -50,13 +46,12 @@ def compress():
 
 
 def blizzard(d, s):
-    dx = [-1, 1, 0, 0]
-    dy = [0, 0, -1, 1]
-    x, y = int(2 / n), int(2 / n)
+    dx = [0, -1, 1, 0, 0]
+    dy = [0, 0, 0, -1, 1]
+    x, y = int(n / 2), int(n / 2)
     for i in range(1, s + 1):
-        x += dx[d - 1]
-        y += dy[d - 1]
-
+        x += dx[d]
+        y += dy[d]
         arr[num[x][y]] = 0
 
     compress()
@@ -64,11 +59,58 @@ def blizzard(d, s):
 
 def bomb():
     check = False
+    i = 1
+    while i <= n * n - 1 + 1:
+        if arr[i] == 0:
+            break
+
+        j = i
+        while j + 1 <= n * n - 1 and arr[i] == arr[j + 1]:
+            j += 1
+
+        if j - i + 1 >= 4:
+            cnt[arr[i]] += j - i + 1
+
+            for k in range(i, j + 1):
+                arr[k] = 0
+            check = True
+
+        i = j
+        i += 1
+
+    compress()
+
     return check
 
 
 def convert():
-    pass
+    b = [0] * (n * n)
+
+    lastIdx = 0
+
+    i = 1
+    while i <= n * n - 1 + 1:
+        if arr[i] == 0:
+            break
+        j = i
+        while j + 1 <= n * n - 1 and arr[i] == arr[j + 1]:
+            j += 1
+
+        A = j - i + 1
+        B = arr[i]
+
+        if lastIdx < n * n - 1:
+            lastIdx += 1
+            b[lastIdx] = A
+        if lastIdx < n * n - 1:
+            lastIdx += 1
+            b[lastIdx] = B
+
+        i = j
+        i += 1
+
+    for i in range(1, n * n - 1 + 1):
+        arr[i] = b[i]
 
 
 cnt = [0] * 4
@@ -84,8 +126,10 @@ def pro():
 
         blizzard(d, s)
 
-        while bomb:
-            pass
+        while True:
+            flag = bomb()
+            if not flag:
+                break
 
         convert()
 
