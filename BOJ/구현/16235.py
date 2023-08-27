@@ -2,7 +2,6 @@
 import sys
 
 input = sys.stdin.readline
-
 dx = [-1, -1, 0, 1, 1, 1, 0, -1]
 dy = [0, 1, 1, 1, 0, -1, -1, -1]
 
@@ -14,67 +13,63 @@ for _ in range(n):
     tmp = list(map(int, input().split()))
     food.append(tmp)
 
-tree_list = []
+tree = [[[] for _ in range(n)] for _ in range(n)]
 for _ in range(m):
     x, y, age = map(int, input().split())
-    tree_list.append([x - 1, y - 1, age])
+    tree[x - 1][y - 1].append(age)
 
 
-def spring():
-    global tree_list, dead_tree_list
-
-    # 나이가 적은 순으로 정렬
-    tree_list = sorted(tree_list, key=lambda x: x[2])
-    live_tree_list = []
-    dead_tree_list = []
-    for tree in tree_list:
-        x, y, age = tree[0], tree[1], tree[2]
-        if graph[x][y] < age:
-            dead_tree_list.append([x, y, age])
-            continue
-        graph[x][y] -= age
-        live_tree_list.append([x, y, age + 1])
-
-    tree_list = live_tree_list
-
-
-def summer():
-    global graph, dead_tree_list
-    for dead_tree in dead_tree_list:
-        x, y, age = dead_tree[0], dead_tree[1], dead_tree[2]
-        graph[x][y] += age // 2
-
-
-def fall():
-    global tree_list
-    new_tree_list = tree_list
-    for tree in tree_list:
-        x, y, age = tree[0], tree[1], tree[2]
-        if age % 5 != 0:
-            continue
-        for i in range(len(dx)):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if 0 <= nx < n and 0 <= ny < n:
-                new_tree_list.append([nx, ny, 1])
-
-    tree_list = new_tree_list
-
-
-def winter():
-    global graph
+def spring_and_summer():
+    global tree, graph
     for i in range(n):
         for j in range(n):
+            if tree[i][j]:
+                tree[i][j].sort()
+                dead_tree_age = 0
+                live_tree_list = []
+
+                for tmp_age in tree[i][j]:
+                    if tmp_age > graph[i][j]:
+                        dead_tree_age += tmp_age // 2
+                    else:
+                        graph[i][j] -= tmp_age
+                        live_tree_list.append(tmp_age + 1)
+
+                tree[i][j] = []
+                tree[i][j].extend(live_tree_list)
+
+                graph[i][j] += dead_tree_age
+
+
+def fall_and_winter():
+    global tree, graph
+    for i in range(n):
+        for j in range(n):
+            if tree[i][j]:
+                tree_num = len(tree[i][j])
+                for k in range(tree_num):
+                    if tree[i][j][k] % 5 != 0:
+                        continue
+                    for d in range(len(dx)):
+                        ni = i + dx[d]
+                        nj = j + dy[d]
+                        if 0 <= ni < n and 0 <= nj < n:
+                            tree[ni][nj].append(1)
+
             graph[i][j] += food[i][j]
 
 
 def solve():
-    spring()
-    summer()
-    fall()
-    winter()
+    spring_and_summer()
+    fall_and_winter()
 
 
 for _ in range(k):
     solve()
-print(len(tree_list))
+
+ans = 0
+for i in range(n):
+    for j in range(n):
+        ans += len(tree[i][j])
+
+print(ans)
