@@ -1,6 +1,4 @@
 # 암호 만들기
-# 최소 한 개의 모음 + 최소 두 개의 자음
-# 오름차순 정렬
 
 l, c = map(int, input().split())
 lst = list(input().split())
