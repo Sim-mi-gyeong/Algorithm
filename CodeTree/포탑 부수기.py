@@ -1,4 +1,5 @@
 import sys
+from collections import deque
 
 input = sys.stdin.readline
 
@@ -9,12 +10,17 @@ graph = [list(map(int, input().split())) for _ in range(n)]
 INF = int(1e9)
 
 isAttacked = [[False for _ in range(m)] for _ in range(n)]
-
 lastAttack = [[0 for _ in range(m)] for _ in range(n)]
 
 
 def isFinish():
-    return False
+    cnt = 0
+    for i in range(n):
+        for j in range(m):
+            if graph[i][j] > 0:
+                cnt += 1
+
+    return cnt == 1
 
 
 def select_attacker():
@@ -61,25 +67,92 @@ def select_target():
     return maxI, maxJ
 
 
-def raser():
-    pass
+def attack(x, y, power):
+    isAttacked[x][y] = 1
+    graph[x][y] = max(0, graph[x][y] - power)
 
 
-def bomb():
-    pass
+def raser(startX, startY, targetX, targetY):
+    dx = [0, 1, 0, -1]
+    dy = [1, 0, -1, 0]
+
+    q = deque()
+    visited = [[0] * m for _ in range(n)]
+    come = [[None] * m for _ in range(n)]
+
+    visited[startX][startY] = 1
+    q.append((startX, startY))
+
+    while q:
+        x, y = q.popleft()
+
+        for d in range(len(dx)):
+            nx = (x + dx[d] + n) % n
+            ny = (y + dy[d] + m) % m
+
+            if not visited[nx][ny] and graph[nx][ny] > 0:
+                visited[nx][ny] = 1
+                q.append((nx, ny))
+                come[nx][ny] = (x, y)
+
+    if visited[targetX][targetY] == 0:
+        return False
+
+    x, y = targetX, targetY
+    while x != startX or y != startY:
+        power = graph[startX][startY] // 2
+        if (x, y) == (targetX, targetY):
+            power = graph[startX][startY]
+
+        attack(x, y, power)
+
+        x, y = come[x][y]
+
+    return True
+
+
+def bomb(startX, startY, targetX, targetY):
+    attack(targetX, targetY, graph[startX][startY])
+
+    dx = [-1, -1, 0, 1, 1, 1, 0, -1]
+    dy = [0, 1, 1, 1, 0, -1, -1, -1]
+    power = graph[startX][startY] // 2
+    for d in range(len(dx)):
+        nx = (targetX + dx[d] + n) % n
+        ny = (targetY + dy[d] + m) % m
+
+        if (nx, ny) == (startX, startY):
+            continue
+
+        if (nx, ny) == (targetX, targetY):
+            power = graph[startX][startY]
+
+        attack(nx, ny, power)
 
 
 for time in range(1, k + 1):
     if isFinish():
         break
 
-    atacker = select_attacker()
+    attacker = select_attacker()
 
     target = select_target()
 
-    graph[atacker[0]][atacker[1]] += n + m
+    graph[attacker[0]][attacker[1]] += n + m
 
-    lastAttack[atacker[0]][atacker[1]] = time
+    lastAttack[attacker[0]][attacker[1]] = time
 
     isAttacked = [[False for _ in range(m)] for _ in range(n)]
-    isAttacked[atacker[0]][atacker[1]] = True
+
+    isAttacked[attacker[0]][attacker[1]] = True
+
+    if not raser(attacker[0], attacker[1], target[0], target[1]):
+        bomb(attacker[0], attacker[1], target[0], target[1])
+
+    for i in range(n):
+        for j in range(m):
+            if not isAttacked[i][j] and graph[i][j] > 0:
+                graph[i][j] += 1
+
+ans = select_target()
+print(graph[ans[0]][ans[1]])
