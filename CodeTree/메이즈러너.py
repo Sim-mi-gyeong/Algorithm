@@ -2,6 +2,7 @@ import sys
 
 input = sys.stdin.readline
 
+# 정사각형 좌표 크기, 참가자 수, 게임 시간
 n, m, k = map(int, input().split())
 
 
